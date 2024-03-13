@@ -1,4 +1,4 @@
-﻿  data_tools.cpp
-C:\Users\user\source\repos\PCTP\lib_mac.h(12,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
-C:\Users\user\source\repos\PCTP\data_tools.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
+﻿  PCTP.cpp
+C:\Users\user\source\repos\PCTP\lib_mac.h(13,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
+C:\Users\user\source\repos\PCTP\PCTP.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
   PCTP.vcxproj -> C:\Users\user\source\repos\PCTP\x64\Debug\PCTP.exe

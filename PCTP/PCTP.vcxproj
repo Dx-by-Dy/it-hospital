@@ -140,10 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="data_tools.cpp" />
+    <ClCompile Include="file_tools.cpp" />
     <ClCompile Include="PCTP.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="data_tools.h" />
+    <ClInclude Include="file_tools.h" />
     <ClInclude Include="lib_mac.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
