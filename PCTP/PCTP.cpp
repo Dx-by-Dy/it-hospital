@@ -9,47 +9,60 @@ Parameter change testing program
 using namespace std;
 
 
-int main()
-{
+int main(int argc, char* argv[]){
 
-    //создать функцию открытия файлов по путям и менам
-    //создать функцию блокировки файлов
+    //написать файл логгов
 
-    HANDLE infile = CreateFileA("C:\\Users\\user\\Desktop\\in.txt",
-                                GENERIC_READ | GENERIC_WRITE,
-                                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                NULL,
-                                OPEN_ALWAYS,
-                                FILE_ATTRIBUTE_NORMAL,
-                                NULL);
-
-    if (infile == INVALID_HANDLE_VALUE) {
-        cout << "infile opening error\n";
-        exit(1);
-    }
-
-    HANDLE outfile = CreateFileA("C:\\Users\\user\\Desktop\\out.txt",
-                                GENERIC_READ | GENERIC_WRITE,
-                                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                NULL,
-                                OPEN_ALWAYS,
-                                FILE_ATTRIBUTE_NORMAL,
-                                NULL);
-
-    if (infile == INVALID_HANDLE_VALUE) {
-        cout << "outfile opening error\n";
-        exit(1);
-    }
-
+    string path = get_path_dir(argv[0]);
     char input;
     map <string, double> data;
 
+    HANDLE startfile = open_file(path + "start.txt");
+    HANDLE infile = open_file(path + "params_in.txt");
+    HANDLE outfile = open_file(path + "params_out.txt");
+
+    clear_file(infile);
+    clear_file(outfile);
+
+    if (file_empty(startfile)) {
+        _OVERLAPPED overlapped1 = { 0 };
+        string line = "SomeParams=0.000000\ntestParams=0.000001";
+        data["SomeParams"] = 0.000000;
+        data["testParams"] = 0.000001;
+
+        if (!WriteFile(startfile, line.c_str(), line.size(), 0, &overlapped1)) {
+            /* create logging */
+        }
+    }
+    else {
+        read_data_from_infile(startfile, data);
+    }
+
     while (true) {
-        if (file_empty(outfile) && !file_empty(infile)) {
-            read_data(infile, data);
-            print_all_data(data);
-            clear_file(infile);
-            //print_all_data_in_outfile(outfile, data);
+        if (file_empty(outfile) && !file_empty(infile) && lock_both_files(infile, outfile)) {
+
+            if (read_data_from_infile(infile, data)) {
+
+                cout << "All data inputs:" << endl;
+                print_all_data(data);
+                clear_file(infile);
+
+                if (print_data_in_outfile(outfile, data)) {
+                    cout << endl << "All data puts:" << endl;
+                    print_all_data(data);
+                }
+            }
+
+            unlock_both_files(infile, outfile);
+        }
+
+        sleep(10);
+
+        change_data(data);
+
+        if (LockFile(outfile, 0, 0, MAXDWORD, MAXDWORD)) {
+            print_data_in_outfile(outfile, data);
+            UnlockFile(outfile, 0, 0, MAXDWORD, MAXDWORD);
         }
 
         if (_kbhit())
@@ -58,11 +71,10 @@ int main()
             if (input == 'q')
                 return 0;
         }
-
-        sleep(300);
     }
 
     CloseHandle(infile);
     CloseHandle(outfile);
+    CloseHandle(startfile);
     return 0;
 }

@@ -1,4 +1,5 @@
 ﻿  PCTP.cpp
 C:\Users\user\source\repos\PCTP\lib_mac.h(13,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
 C:\Users\user\source\repos\PCTP\PCTP.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
+C:\Users\user\source\repos\PCTP\PCTP.cpp(33,12): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
   PCTP.vcxproj -> C:\Users\user\source\repos\PCTP\x64\Debug\PCTP.exe
